@@ -26,5 +26,3 @@ class MandatoryKeyError(Exception):
 
     def __str__(self):
         return 'Не хватает обязательного атрибута {}'.format(self.key)
-
-

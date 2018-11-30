@@ -26,10 +26,10 @@ def translate_message(response):
     if not isinstance(response, dict):
         raise TypeError
     if RESPONSE not in response:
-        raise MandatoryKeyError
+        raise MandatoryKeyError(RESPONSE)
     code = response[RESPONSE]
     if len(str(code)) != 3:
-        raise ResponseCodeLenError
+        raise ResponseCodeLenError(code)
     if code not in RESPONSE_CODES:
         raise ResponseCodeError(code)
     return response
