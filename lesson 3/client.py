@@ -7,15 +7,18 @@ from errors import UsernameTooLongError, ResponseCodeLenError, MandatoryKeyError
 from JIM.config import *
 from JIM.utils import send_message, get_message
 
+from log.decorators import log
+
+
 logger = logging.getLogger('client_log')
+log = log(logger)
 
 
-def create_presence(account_name="Guest"):
+@log
+def create_presence(account_name='Guest'):
     if not isinstance(account_name, str):
-        logger.warning("TypeError")
         raise TypeError
     if len(account_name) > 25:
-        logger.warning("Имя пользователя {} должно быть не более 26 символов".format(account_name))
         raise UsernameTooLongError(account_name)
 
     message = {
@@ -28,19 +31,16 @@ def create_presence(account_name="Guest"):
     return message
 
 
+@log
 def translate_message(response):
     if not isinstance(response, dict):
-        logger.warning("TypeError")
         raise TypeError
     if RESPONSE not in response:
-        logger.warning('Не хватает обязательного атрибута {}'.format(RESPONSE))
         raise MandatoryKeyError(RESPONSE)
     code = response[RESPONSE]
     if len(str(code)) != 3:
-        logger.warning("Неверная длина кода {}. Длина кода должна быть 3 символа.".format(code))
         raise ResponseCodeLenError(code)
     if code not in RESPONSE_CODES:
-        logger.warning('Неверный код ответа {}'.format(code))
         raise ResponseCodeError(code)
     return response
 
@@ -79,7 +79,6 @@ if __name__ == '__main__':
     logger.info("Получает ответ сервера")
     response = translate_message(response)
     logger.info("Обрабатывает сообщение сервера")
-    # print(response)
     logger.info("Сообщение сервера - {}".format(response))
 
 

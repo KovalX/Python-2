@@ -33,7 +33,6 @@ if __name__ == '__main__':
         logger.exception(IndexError)
         port = 7777
     except ValueError:
-        # print('Порт должен быть целым числом')
         logger.warning("Порт должен быть целым числом")
         sys.exit(0)
 
@@ -46,7 +45,6 @@ if __name__ == '__main__':
         logger.info("Принимает запрос на установку соединения")
         presence = get_message(client)
         logger.info("Принимает сообщение от клиента")
-        # print(presence)
         logger.info("Полученное сообщение - {}".format(presence))
         response = presence_response(presence)
         logger.info("Формирует ответ клиенту")
