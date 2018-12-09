@@ -46,7 +46,6 @@ if __name__ == '__main__':
         logger.info("Принимает запрос на установку соединения")
         presence = get_message(client)
         logger.info("Принимает сообщение от клиента")
-        # print(presence)
         logger.info("Полученное сообщение - {}".format(presence))
         response = presence_response(presence)
         logger.info("Формирует ответ клиенту")
