@@ -6,6 +6,10 @@ RESPONSE = 'response'
 ERROR = 'error'
 
 PRESENCE = 'presence'
+MSG = 'msg'
+TO = 'to'
+FROM = 'from'
+MESSAGE = 'message'
 
 BASIC_NOTICE = 100
 OK = 200

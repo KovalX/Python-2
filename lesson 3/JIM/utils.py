@@ -25,6 +25,7 @@ def bytes_to_dict(message_bytes):
 
 
 def send_message(sock, message):
+    print(message)
     bpresence = dict_to_bytes(message)
     sock.send(bpresence)
 

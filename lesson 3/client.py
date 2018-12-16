@@ -14,7 +14,7 @@ log = log(logger)
 
 
 @log
-def create_presence(account_name="Guest22222222222222222222222222222222222222222222222222"):
+def create_presence(account_name="Guest"):
     if not isinstance(account_name, str):
         raise TypeError
     if len(account_name) > 25:
@@ -44,6 +44,31 @@ def translate_message(response):
     return response
 
 
+def read_messages(client):
+    """
+    Клиент читает входящие сообщения в бесконечном цикле
+    :param client: сокет клиента
+    """
+    while True:
+        # читаем сообщение
+        print('Читаю')
+        message = get_message(client)
+        print(message)
+        # там должно быть сообщение всем
+        print(message[MESSAGE])
+
+
+def create_message(message_to, text, account_name='Guest'):
+    return {ACTION: MSG, TIME: time.asctime(), TO: message_to, FROM: account_name, MESSAGE: text}
+
+
+def write_messages(client):
+    while True:
+        text = input('>>>>')
+        message = create_message('all', text)
+        send_message(client, message)
+
+
 # Start client
 if __name__ == '__main__':
     logger.info("Запуск скрипта клиента")
@@ -67,6 +92,10 @@ if __name__ == '__main__':
         # print('Порт должен быть целым числом')
         logger.exception("Порт должен быть целым числом")
         sys.exit(0)
+    try:
+        mode = sys.argv[3]
+    except IndexError:
+        mode = 'r'
 
     client.connect((addr, port))
     logger.info("Устанавливает соединение с сервером")
@@ -79,5 +108,12 @@ if __name__ == '__main__':
     response = translate_message(response)
     logger.info("Обрабатывает сообщение сервера")
     logger.info("Сообщение сервера - {}".format(response))
+    if response['response'] == OK:
+        if mode == 'r':
+            read_messages(client)
+        elif mode == 'w':
+            write_messages(client)
+        else:
+            raise Exception('Не верный режим чтения/записи')
 
 
